@@ -7,7 +7,10 @@ export default function EditPost() {
   const [title,setTitle] = useState('');
   const [summary,setSummary] = useState('');
   const [content,setContent] = useState('');
-//   const [files, setFiles] = useState('');
+  const [files, setFiles] = useState('');
+  const [amount,setAmount]=useState('');
+  const [approver,setApprover]=useState('');
+  const[expenseprocess,setExpenseprocess]=useState('');
   const [redirect,setRedirect] = useState(false);
 
   useEffect(() => {
@@ -15,8 +18,11 @@ export default function EditPost() {
       .then(response => {
         response.json().then(postInfo => {
           setTitle(postInfo.title);
-          setContent(postInfo.content);
+          // setContent(postInfo.content);
           setSummary(postInfo.summary);
+          setAmount(postInfo.amount);
+          setApprover(postInfo.approver);
+          setExpenseprocess(postInfo.expenseprocess);
         });
       });
   }, []);
@@ -26,11 +32,15 @@ export default function EditPost() {
     const data = new FormData();
     data.set('title', title);
     data.set('summary', summary);
-    data.set('content', content);
+    // data.set('content', content);
     data.set('id', id);
-    // if (files?.[0]) {
-    //   data.set('file', files?.[0]);
-    // }
+    data.set('file', files[0]);
+    data.set('amount',amount);
+    data.set('approver',approver);
+    data.set('expenseprocess',expenseprocess);
+    if (files?.[0]) {
+      data.set('file', files?.[0]);
+    }
     const response = await fetch('http://localhost:4000/post', {
       method: 'PUT',
       body: data,
@@ -48,17 +58,23 @@ export default function EditPost() {
   return (
     <form onSubmit={updatePost}>
       <input type="title"
-             placeholder={'Title'}
+             placeholder={'Name'}
              value={title}
              onChange={ev => setTitle(ev.target.value)} />
       <input type="summary"
-             placeholder={'Summary'}
+             placeholder={'Type of reimbursement'}
              value={summary}
              onChange={ev => setSummary(ev.target.value)} />
-      {/* <input type="file"
-             onChange={ev => setFiles(ev.target.files)} /> */}
-      <Editor onChange={setContent} value={content} />
-      <button style={{marginTop:'5px'}}>Update Patient Details</button>
+      <input type="file"
+             onChange={ev => setFiles(ev.target.files)} />
+
+<input type="number" placeholder={'Amount'} value={amount} onChange={ev=>setAmount(ev.target.value)} />
+      <input type="approver" placeholder={'Name of the approver'} value={approver} onChange={ev=>setApprover(ev.target.value)}/>
+      <input type="expenseprocess" placeholder={'If the expense is processed or not field'} value={expenseprocess} onChange={ev=>setExpenseprocess(ev.target.value)}/>
+
+
+      {/* <Editor onChange={setContent} value={content} /> */}
+      <button style={{marginTop:'5px'}}>Update expense Details</button>
     </form>
   );
 }

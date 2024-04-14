@@ -8,13 +8,14 @@ import {UserContextProvider} from "./UserContext";
 import CreatePost from "./pages/CreatePost";
 import PostPage from "./pages/PostPage";
 import EditPost from "./pages/EditPost";
-import Footer from "./Footer";
+import Hero from "./Hero";
 function App() {
   return (
     <UserContextProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route index element={<IndexPage />} />
+          <Route path="/home" element={<Hero/>}></Route>
+          <Route path="/allexpenses" element={<IndexPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/create" element={<CreatePost />} />
@@ -22,7 +23,6 @@ function App() {
           <Route path="/edit/:id" element={<EditPost />} />        
         </Route>
       </Routes>
-      {/* <Footer/> */}
     </UserContextProvider>
   );
 }
